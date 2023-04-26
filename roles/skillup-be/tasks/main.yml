@@ -1,0 +1,29 @@
+---
+# tasks file for skillup-be
+become: yes
+- name: install lamp packages
+  apt: "name={{ item }} state=latest update_cache=yes"
+  with_items:
+          - apache2
+  notify: start apache2
+
+- name: create befiles
+  file:
+          path: "/tmp/befiles"
+          state: directory
+
+- name: copy html from s3
+  amazon.aws.aws_s3:
+          bucket: skillup-s3bucket
+          object: /amontero/backend/backend.zip
+          dest: /tmp/befiles/backend.zip
+          mode: get
+
+- name: unzip file
+  unarchive:
+          src: /tmp/fefiles/backend.zip
+          dest: /var/www/html/
+          remote_src: True
+
+- name: frontend to index.html
+  command: mv /var/www/html/frontend.html /var/www/html/index.html

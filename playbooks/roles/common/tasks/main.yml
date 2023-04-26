@@ -1,0 +1,29 @@
+---
+# tasks file for common
+- name: Backup ssh config
+  copy:
+          src: "/etc/ssh/sshd_config"
+          dest: "/etc/ssh/sshd_config.orig"
+- name: Modify ssh port
+  lineinfile:
+          dest: "/etc/ssh/sshd_config"
+          regexp: "^Port"
+          line: "Port 6522"
+  notify: restart sshd
+
+- name: install multiple packages
+  apt: "name={{ item }} state=latest update_cache=yes"
+  with_items:
+          - wget
+          - unzip
+          - curl
+          - git
+          - jq
+
+- name: Copy a new "log rotate" file into logrotate.d
+  ansible.builtin.copy:
+    src: /home/ansible/ansible/playbooks/roles/common/files/httpd 
+    dest: /etc/logrotate.d/httpd
+    owner: root
+    group: root
+    mode: '0644'

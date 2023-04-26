@@ -1,0 +1,31 @@
+---
+become: yes
+# tasks file for skillup-fe
+- name: install lamp packages
+  apt: "name={{ item }} state=latest update_cache=yes"
+  with_items:
+          - apache2
+          - mysql-client
+          - php
+  notify: start apache2
+
+- name: create fefiles
+  file:
+          path: "/tmp/fefiles"
+          state: directory
+
+- name: copy html from s3
+  amazon.aws.aws_s3:
+          bucket: skillup-s3bucket
+          object: /amontero/frontend/frontend.zip
+          dest: /tmp/fefiles/frontend.zip
+          mode: get
+
+- name: unzip file
+  unarchive:
+          src: /tmp/fefiles/frontend.zip
+          dest: /var/www/html/
+          remote_src: True
+
+- name: Move frontend to index.html
+  command: mv /var/www/html/frontend.html /var/www/html/index.html
