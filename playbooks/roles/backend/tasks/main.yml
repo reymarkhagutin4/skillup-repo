@@ -14,7 +14,7 @@
 - name: copy html from s3
   amazon.aws.aws_s3:
           bucket: skillup-s3bucket
-          object: /amontero/backend/backend.zip
+          object: /rhagutin/backend/backend.zip
           dest: /tmp/befiles/backend.zip
           mode: get
 

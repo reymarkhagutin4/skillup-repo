@@ -17,7 +17,7 @@
   #  amazon.aws.aws_s3:
   aws_s3:
           bucket: skillup-s3bucket
-          object: /amontero/frontend/frontend.zip
+          object: /rhagutin/frontend/frontend.zip
           dest: /tmp/fefiles/frontend.zip
           mode: get
 
