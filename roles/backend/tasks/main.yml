@@ -14,8 +14,8 @@ become: yes
 
 - name: copy html from s3
   amazon.aws.aws_s3:
-          bucket: skillup-s3bucket
-          object: /rhagutin/backend/backend.zip
+          bucket: skillup-s3-r.hagutin-001
+          object: backend.zip
           dest: /tmp/befiles/backend.zip
           mode: get
 
