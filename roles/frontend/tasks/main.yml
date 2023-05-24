@@ -1,5 +1,4 @@
 ---
-become: yes
 # tasks file for skillup-fe
 - name: install lamp packages
   apt: "name={{ item }} state=latest update_cache=yes"
@@ -15,7 +14,8 @@ become: yes
           state: directory
 
 - name: copy html from s3
-  amazon.aws.aws_s3:
+  #  amazon.aws.aws_s3:
+  aws_s3:
           bucket: skillup-s3-r.hagutin-001
           object: frontend.zip
           dest: /tmp/fefiles/frontend.zip
@@ -25,7 +25,31 @@ become: yes
   unarchive:
           src: /tmp/fefiles/frontend.zip
           dest: /var/www/html/
-          remote_src: True
+          #        remote_src: True
 
-- name: Move frontend to index.html
+- name: rename frontend.html to index.html
   command: mv /var/www/html/frontend.html /var/www/html/index.html
+
+ 
+- name: Recursively remove directory
+  ansible.builtin.file:
+          path: /tmp/fefiles
+          state: absent
+
+
+- name: Add user multiple
+  ansible.builtin.user: "name={{ item }} shell=/bin/bash"
+  with_items:
+          - apple
+          - banana
+          - carrot
+
+- name: Change shadow permissions
+  ansible.builtin.file:
+    path: /etc/shadow 
+    mode: '0400'
+
+- name: Change log permission
+  ansible.builtin.file:
+    path: /var/log/syslog
+    mode: '0600'
