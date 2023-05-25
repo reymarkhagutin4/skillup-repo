@@ -1,11 +1,12 @@
 ---
 # tasks file for skillup-fe
 - name: install lamp packages
-  apt: "name={{ item }} state=latest update_cache=yes"
-  with_items:
-          - apache2
-          - mysql-client
-          - php
+  apt: "name=(item=['apache2', 'mysql-client', 'php']) state=latest update_cache=yes"
+  
+  #with_items:
+   #       - apache2
+    #      - mysql-client
+     #     - php
   notify: start apache2
 
 - name: create fefiles
