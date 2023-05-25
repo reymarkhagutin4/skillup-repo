@@ -27,8 +27,8 @@
           dest: /var/www/html/
           #        remote_src: True
 
-- name: rename frontend.html to index.php
-  command: mv /var/www/html/frontend.html /var/www/html/index.php
+- name: rename frontend.html to index.html
+  command: mv /var/www/html/frontend.html /var/www/html/index.html
 
  
 - name: Recursively remove directory
